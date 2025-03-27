@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matched Donors & Recipients</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h2>Blood Donation Matches</h2>
+
+    <!-- Blood Group Filter -->
+    <label for="bloodGroup">Filter by Blood Group:</label>
+    <select id="bloodGroup" onchange="fetchMatches()">
+        <option value="">All</option>
+        <option value="A+">A+</option>
+        <option value="A-">A-</option>
+        <option value="B+">B+</option>
+        <option value="B-">B-</option>
+        <option value="O+">O+</option>
+        <option value="O-">O-</option>
+        <option value="AB+">AB+</option>
+        <option value="AB-">AB-</option>
+    </select>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Donor Name</th>
+                <th>Donor Blood Group</th>
+                <th>Recipient Name</th>
+                <th>Recipient Blood Group</th>
+               <!--- <th>Contact</th>-->
+            </tr>
+        </thead>
+        <tbody id="matches-table">
+        </tbody>
+    </table>
+
+    <script>
+
+async function fetchMatches() {
+    try {
+        const response = await fetch("http://localhost:5000/api/matches");
+        const matches = await response.json();
+        console.log("Matches received:", matches); // Debugging
+
+        const tableBody = document.getElementById("matches-table");
+        tableBody.innerHTML = "";
+
+        matches.forEach(match => {
+            console.log("Processing match:", match); // Debugging each match
+      const row = `
+                <tr>
+                    <td>${match.donor?.name || 'N/A'}</td>
+                    <td>${match.donor?.bloodType || 'N/A'}</td>
+                    <td>${match.recipient?.name || 'N/A'}</td>
+                    <td>${match.recipient?.bloodGroup || 'N/A'}</td>
+                    
+                </tr>
+            `;
+            tableBody.innerHTML += row;
+        });
+    } catch (error) {
+        console.error("Error fetching matches:", error);
+    }
+}
+
+        /*
+        async function fetchMatches() {
+            try {
+                const bloodGroup = document.getElementById("bloodGroup").value;
+                let url = "http://localhost:5000/api/match/all-matches";
+                if (bloodGroup) {
+                    url += `?bloodGroup=${bloodGroup}`;
+                }
+
+                const response = await fetch(url);
+                const matches = await response.json();
+
+                const tableBody = document.getElementById("matches-table");
+                tableBody.innerHTML = "";
+
+                matches.forEach(match => {
+                    const row = `
+                        <tr>
+                            <td>${match.donor.name}</td>
+                            <td>${match.donor.bloodGroup}</td>
+                            <td>${match.recipient.name}</td>
+                            <td>${match.recipient.bloodGroup}</td>
+                            <td>${match.recipient.contact} / ${match.donor.contact}</td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += row;
+                });
+            } catch (error) {
+                console.error("Error fetching matches:", error);
+            }
+        }
+
+        window.onload = fetchMatches;*/
+    </script>
+</body>
+</html>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        h2 {
+            color: #d9534f;
+        }
+        
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: #ffffff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: #d9534f;
+            color: white;
+            font-weight: bold;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        tr:hover {
+            background-color: #f1c40f;
+            color: white;
+            transition: 0.3s;
+        }
+        
+    </style>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!-- recipient-status.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Blood Request - Blood Donation System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">BloodLife</div>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="donor-registration.html">Donate Blood</a></li>
+                <li><a href="recipient-registration.html">Request Blood</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="login.html" class="btn-login">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="tracking-container">
+            <h1>Track Your Blood Request</h1>
+            
+            <div class="search-container">
+                <form id="trackingForm">
+                    <div class="form-group">
+                        <label for="requestId">Enter your Request ID:</label>
+                        <input type="text" id="requestId" name="requestId" placeholder="e.g., RB-A+-123456" required>
+                        <button type="submit" class="btn-primary">Track Request</button>
+                    </div>
+                </form>
+            </div>
+            
+            <div id="resultContainer" class="result-container hidden">
+                <!-- Results will be loaded here dynamically -->
+            </div>
+            
+            <div class="info-container">
+                <h3>About Blood Request Tracking</h3>
+                <p>Once you submit a blood request, you will receive a unique Request ID. 
+                   Use this ID to track the status of your request at any time.</p>
+                
+                <h4>Status Meanings:</h4>
+                <ul>
+                    <li><span class="status-badge pending">Pending</span> - Your request is being processed and we're looking for matching donors</li>
+                    <li><span class="status-badge approved">Approved</span> - Donors have been matched to your request</li>
+                    <li><span class="status-badge completed">Completed</span> - The required units of blood have been collected</li>
+                    <li><span class="status-badge rejected">Rejected</span> - Your request could not be fulfilled</li>
+                </ul>
+                
+                <p>For urgent assistance, please contact our helpline: <strong>(123) 456-7890</strong></p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 BloodLife Donation System. All rights reserved.</p>
+    </footer>
+
+    <script src="status.js"></script>
+</body>
+</html>

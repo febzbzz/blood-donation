@@ -1,0 +1,1112 @@
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Donation - Register</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Register as a Blood Donor</h2>
+        <form id="registerForm">
+            <input type="text" id="name" placeholder="Full Name" required>
+            <input type="email" id="email" placeholder="Email Address" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <select id="bloodType" required>
+                <option value="" disabled selected>Select Blood Type</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+            </select>
+            <input type="number" id="age" placeholder="Age" required>
+            <input type="text" id="city" placeholder="City" required>
+            <button type="submit">Register</button>
+        </form>
+        <p>Already registered? <a href="login.html">Login here</a></p>
+    </div>
+</body>
+</html>
+
+<style>
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f8f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Container */
+.container {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 350px;
+}
+
+/* Heading */
+h2 {
+    color: #d00000;
+    margin-bottom: 20px;
+}
+
+/* Form */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+button {
+    background-color: #d00000;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #b00000;
+}
+
+/* Login Link */
+p {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+p a {
+    color: #d00000;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+
+</style>
+
+<script>
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const registerForm = document.getElementById("registerForm");
+
+    registerForm.addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevent page reload
+
+        // Get form values
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const bloodType = document.getElementById("bloodType").value;
+        const age = document.getElementById("age").value.trim();
+        const city = document.getElementById("city").value.trim();
+
+        // Basic validation
+        if (!name || !email || !password || !bloodType || !age || !city) {
+            alert("Please fill in all the fields.");
+            return;
+        }
+
+        if (parseInt(age) < 18) {
+            alert("You must be at least 18 years old to register.");
+            return;
+        }
+
+        // Store user data in localStorage (simulating a database)
+        const userData = { name, email, password, bloodType, age, city };
+        localStorage.setItem("bloodDonor", JSON.stringify(userData));
+
+        alert("Registration successful! You can now log in.");
+        window.location.href = "login.html"; // Redirect to login page
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const registerForm = document.getElementById("registerForm");
+
+    if (registerForm) {
+        registerForm.addEventListener("submit", async function (event) {
+            event.preventDefault(); // Prevent page reload
+
+            // Get form values
+            const name = document.getElementById("name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
+            const bloodType = document.getElementById("bloodType").value;
+            const age = document.getElementById("age").value.trim();
+            const city = document.getElementById("city").value.trim();
+
+            // Basic validation
+            if (!name || !email || !password || !bloodType || !age || !city) {
+                alert("Please fill in all the fields.");
+                return;
+            }
+
+            if (parseInt(age) < 18) {
+                alert("You must be at least 18 years old to register.");
+                return;
+            }
+
+            // Create request body
+            const userData = { 
+                name, 
+                email, 
+                password, 
+                bloodType, 
+                age, 
+                address: { city } // Assuming API expects 'address' object
+            };
+
+            try {
+                const response = await fetch("http://localhost:5000/api/auth/register", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(userData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert("Registration successful! You can now log in.");
+                    window.location.href = "login.html"; // Redirect to login page
+                } else {
+                    alert("Error: " + (data.msg || "Registration failed"));
+                }
+            } catch (error) {
+                console.error("Registration Error:", error);
+                alert("An error occurred. Please try again.");
+            }
+        });
+    }
+});
+
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Donation - Register</title>
+   
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    
+    <!-- Logo -->
+    <div class="logo-container">
+        <div class="logo"></div>
+        <div class="logo-text">Blood<span>Donors</span></div>
+    </div>
+    
+    <!-- Decorative elements -->
+    <div class="circle-1"></div>
+    <div class="circle-2"></div>
+    
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h2>Register as a Blood Donor</h2>
+            <p>Join our community and help save lives</p>
+            
+            <!-- Animated blood drops -->
+            <div class="blood-drops">
+                <div class="drop"></div>
+                <div class="drop"></div>
+                <div class="drop"></div>
+            </div>
+        </div>
+        
+        <!-- Progress steps -->
+        <div class="progress-steps">
+            <div class="step active">1</div>
+            <div class="step">2</div>
+            <div class="step">3</div>
+        </div>
+        
+        <div class="form-container">
+            <form id="registerForm">
+                <!-- Input fields with labels -->
+                <div class="input-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" required>
+                    <div class="error-message">Please enter your full name</div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" required>
+                    <div class="error-message">Please enter a valid email address</div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                    <div class="password-strength">
+                        <div class="password-strength-meter"></div>
+                    </div>
+                    <div class="password-strength-text">Password strength</div>
+                </div>
+                
+                <div class="input-group blood-type-group">
+                    <label for="bloodType">Blood Type</label>
+                    <div class="blood-icon"></div>
+                    <select id="bloodType" required>
+                        <option value="" disabled selected>Select Blood Type</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label for="age">Age</label>
+                    <input type="number" id="age" required>
+                    <div class="error-message">You must be at least 18 years old</div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="city">City</label>
+                    <input type="text" id="city" required>
+                </div>
+                
+                <button type="submit"><span>Register Now</span></button>
+            </form>
+            
+            <div class="success-message">
+                Registration successful! Redirecting to login...
+            </div>
+            
+            <div class="login-link">
+                <p>Already registered? <a href="login.html">Login here</a></p>
+            </div>
+            
+            <!-- Blood facts section -->
+            <div class="blood-facts">
+                <h3>Did You Know?</h3>
+                <ul>
+                    <li>One donation can save up to three lives</li>
+                    <li>O- is the universal donor blood type</li>
+                    <li>Only 7% of people have O- blood</li>
+                </ul>
+            </div>
+            
+            <!-- Blood compatibility chart -->
+            <div class="blood-compatibility">
+                <div class="compatibility-header">Blood Type Compatibility</div>
+                <div class="compatibility-body">
+                    <div class="compatibility-item">O- → Everyone</div>
+                    <div class="compatibility-item">O+ → O+, A+, B+, AB+</div>
+                    <div class="compatibility-item">A- → A-, A+, AB-, AB+</div>
+                    <div class="compatibility-item">A+ → A+, AB+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+
+        /* Advanced Blood Donation Registration Page Styling */
+:root {
+    --primary: #d00000;
+    --primary-dark: #a00000;
+    --primary-light: #ff5252;
+    --primary-very-light: #fff0f0;
+    --gray-dark: #333333;
+    --gray-medium: #666666;
+    --gray-light: #e0e0e0;
+    --white: #ffffff;
+    --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.1);
+    --shadow-strong: 0 15px 35px rgba(208, 0, 0, 0.2);
+    --transition-fast: 0.3s ease;
+}
+
+/* Base Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', 'Segoe UI', sans-serif;
+    background-image: 
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 30c-5.5 0-10-4.5-10-10s4.5-10 10-10 10 4.5 10 10-4.5 10-10 10zm0 0c5.5 0 10 4.5 10 10s-4.5 10-10 10-10-4.5-10-10 4.5-10 10-10z' fill='%23ff0000' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E"),
+        linear-gradient(135deg, #fff5f5 0%, #fff 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    color: var(--gray-dark);
+    position: relative;
+}
+
+/* Logo and Header */
+.logo-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    z-index: 10;
+}
+
+.logo {
+    width: 50px;
+    height: 50px;
+    position: relative;
+    margin-right: 10px;
+}
+
+.logo::before, .logo::after {
+    content: "";
+    position: absolute;
+}
+
+.logo::before {
+    width: 30px;
+    height: 45px;
+    background-color: var(--primary);
+    border-radius: 15px 15px 0 0;
+    bottom: 0;
+    left: 10px;
+}
+
+.logo::after {
+    width: 30px;
+    height: 30px;
+    background-color: var(--primary);
+    border-radius: 50%;
+    top: 0;
+    left: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.logo-text {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--primary);
+    letter-spacing: -0.5px;
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.logo-text span {
+    font-weight: 300;
+    color: var(--gray-medium);
+}
+
+/* Main Container */
+.container {
+    background-color: var(--white);
+    width: 650px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow-soft), 0 0 0 1px rgba(0, 0, 0, 0.05);
+    position: relative;
+    z-index: 1;
+}
+
+/* Header Section */
+.header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    padding: 30px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.header h2 {
+    color: var(--white);
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 1;
+}
+
+.header p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 16px;
+    margin-bottom: 0;
+    position: relative;
+    z-index: 1;
+}
+
+/* Background Elements */
+.header::before, .header::after {
+    content: "";
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+}
+
+.header::before {
+    width: 150px;
+    height: 150px;
+    bottom: -60px;
+    right: -60px;
+}
+
+.header::after {
+    width: 80px;
+    height: 80px;
+    top: -20px;
+    left: 40px;
+}
+
+/* Blood Drops Animation */
+.blood-drops {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.drop {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.15);
+    width: 15px;
+    height: 15px;
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(45deg);
+}
+
+.drop:nth-child(1) {
+    top: 10%;
+    left: 20%;
+    animation: float 7s infinite ease-in-out;
+}
+
+.drop:nth-child(2) {
+    top: 20%;
+    right: 30%;
+    width: 25px;
+    height: 25px;
+    animation: float 9s infinite ease-in-out 1s;
+}
+
+.drop:nth-child(3) {
+    bottom: 30%;
+    left: 40%;
+    width: 20px;
+    height: 20px;
+    animation: float 8s infinite ease-in-out 2s;
+}
+
+@keyframes float {
+    0% { transform: rotate(45deg) translateY(0px); opacity: 0.3; }
+    50% { transform: rotate(45deg) translateY(10px); opacity: 0.6; }
+    100% { transform: rotate(45deg) translateY(0px); opacity: 0.3; }
+}
+
+/* Form Section */
+.form-container {
+    padding: 35px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.input-group {
+    position: relative;
+}
+
+.input-group label {
+    position: absolute;
+    left: 15px;
+    top: 0;
+    color: var(--gray-medium);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background-color: var(--white);
+    padding: 0 5px;
+    transform: translateY(-50%);
+}
+
+input, select {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid var(--gray-light);
+    border-radius: 10px;
+    font-size: 16px;
+    transition: all var(--transition-fast);
+    background-color: var(--white);
+    color: var(--gray-dark);
+}
+
+input:focus, select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(208, 0, 0, 0.1);
+    outline: none;
+}
+
+/* Blood Type Select Custom Styling */
+.blood-type-group {
+    position: relative;
+}
+
+.blood-type-group::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-25%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid var(--primary);
+    pointer-events: none;
+}
+
+select#bloodType {
+    appearance: none;
+    padding-right: 30px;
+    cursor: pointer;
+    background-color: var(--white);
+}
+
+.blood-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    z-index: 1;
+}
+
+.blood-icon::before {
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 18px;
+    background-color: var(--primary-light);
+    border-radius: 6px 6px 0 0;
+    transform: rotate(45deg);
+    opacity: 0.7;
+}
+
+select#bloodType {
+    padding-left: 45px;
+}
+
+/* Submit Button */
+button {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    color: var(--white);
+    padding: 16px;
+    font-size: 18px;
+    font-weight: 700;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    box-shadow: 0 5px 15px rgba(208, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+    margin-top: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(208, 0, 0, 0.3);
+}
+
+button:active {
+    transform: translateY(1px);
+    box-shadow: 0 4px 8px rgba(208, 0, 0, 0.2);
+}
+
+/* Button Ripple Effect */
+button span {
+    position: relative;
+    z-index: 1;
+}
+
+button::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 10px;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: scale(0) translate(-50%, -50%);
+    transform-origin: left top;
+    transition: transform 0.5s ease-out;
+}
+
+button:active::after {
+    transform: scale(20) translate(-50%, -50%);
+}
+
+/* Login Link */
+.login-link {
+    text-align: center;
+    margin-top: 30px;
+    position: relative;
+}
+
+.login-link::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: var(--gray-light);
+    z-index: 0;
+}
+
+.login-link p {
+    display: inline-block;
+    position: relative;
+    background-color: var(--white);
+    padding: 0 15px;
+    font-size: 14px;
+    color: var(--gray-medium);
+    z-index: 1;
+}
+
+.login-link a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 700;
+    transition: all var(--transition-fast);
+}
+
+.login-link a:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+}
+
+/* Blood Facts Section */
+.blood-facts {
+    margin-top: 25px;
+    background-color: var(--primary-very-light);
+    padding: 15px;
+    border-radius: 10px;
+    position: relative;
+}
+
+.blood-facts h3 {
+    font-size: 16px;
+    color: var(--primary-dark);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+}
+
+.blood-facts h3::before {
+    content: "💡";
+    margin-right: 8px;
+    font-size: 20px;
+}
+
+.blood-facts ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.blood-facts li {
+    font-size: 14px;
+    color: var(--gray-medium);
+    margin-bottom: 8px;
+    padding-left: 20px;
+    position: relative;
+}
+
+.blood-facts li::before {
+    content: "•";
+    color: var(--primary);
+    font-weight: bold;
+    position: absolute;
+    left: 5px;
+}
+
+/* Decorative Elements */
+.circle-1, .circle-2 {
+    position: absolute;
+    border-radius: 50%;
+    z-index: -1;
+}
+
+.circle-1 {
+    width: 300px;
+    height: 300px;
+    background-color: rgba(208, 0, 0, 0.03);
+    top: 10%;
+    right: 5%;
+}
+
+.circle-2 {
+    width: 200px;
+    height: 200px;
+    background-color: rgba(208, 0, 0, 0.02);
+    bottom: 5%;
+    left: 10%;
+}
+
+/* Progress Indicator */
+.progress-steps {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+.step {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: var(--gray-light);
+    color: var(--gray-medium);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    position: relative;
+    margin: 0 30px;
+}
+
+.step.active {
+    background-color: var(--primary);
+    color: var(--white);
+    box-shadow: 0 0 0 4px rgba(208, 0, 0, 0.1);
+}
+
+.step:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    right: -30px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 2px;
+    width: 30px;
+    background-color: var(--gray-light);
+}
+
+.step.active:not(:last-child)::after {
+    background-color: var(--primary-light);
+}
+
+/* Responsive Design */
+@media (max-width: 700px) {
+    .container {
+        width: 100%;
+        max-width: 650px;
+    }
+    
+    .header {
+        padding: 20px;
+    }
+    
+    .form-container {
+        padding: 25px;
+    }
+    
+    .logo-container {
+        position: relative;
+        top: auto;
+        left: auto;
+        margin-bottom: 20px;
+        justify-content: center;
+    }
+    
+    body {
+        padding: 10px;
+    }
+    
+    .progress-steps {
+        padding: 15px 0;
+    }
+    
+    .step {
+        margin: 0 20px;
+    }
+    
+    .step:not(:last-child)::after {
+        width: 20px;
+        right: -20px;
+    }
+}
+
+/* Error Styling */
+.error-message {
+    color: var(--primary);
+    font-size: 13px;
+    margin-top: 5px;
+    display: none;
+}
+
+input.error, select.error {
+    border-color: var(--primary);
+    background-color: rgba(208, 0, 0, 0.03);
+}
+
+input.error + .error-message, select.error + .error-message {
+    display: block;
+}
+
+/* Blood Type Compatibility Chart */
+.blood-compatibility {
+    margin-top: 20px;
+    background-color: var(--white);
+    border: 1px solid var(--gray-light);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+}
+
+.compatibility-header {
+    background-color: var(--primary);
+    color: var(--white);
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.compatibility-body {
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+}
+
+.compatibility-item {
+    background-color: var(--primary-very-light);
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--primary-dark);
+}
+
+/* Password Strength Meter */
+.password-strength {
+    height: 5px;
+    background-color: var(--gray-light);
+    border-radius: 3px;
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+.password-strength-meter {
+    height: 100%;
+    width: 0;
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.password-strength-text {
+    font-size: 12px;
+    margin-top: 5px;
+    text-align: right;
+}
+
+/* Animation for successful submission */
+@keyframes success-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(0, 128, 0, 0.4); }
+    70% { box-shadow: 0 0 0 15px rgba(0, 128, 0, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 128, 0, 0); }
+}
+
+.success-message {
+    display: none;
+    text-align: center;
+    padding: 20px;
+    background-color: #f0fff0;
+    border-radius: 10px;
+    color: #008000;
+    font-weight: 600;
+    margin-top: 20px;
+    animation: success-pulse 2s infinite;
+}
+
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const registerForm = document.getElementById("registerForm");
+            const passwordInput = document.getElementById("password");
+            const strengthMeter = document.querySelector(".password-strength-meter");
+            const strengthText = document.querySelector(".password-strength-text");
+            
+            // Password strength checker
+            passwordInput.addEventListener("input", function() {
+                const val = passwordInput.value;
+                let strength = 0;
+                
+                if (val.length >= 8) strength += 25;
+                if (val.match(/[a-z]+/)) strength += 25;
+                if (val.match(/[A-Z]+/)) strength += 25;
+                if (val.match(/[0-9]+/)) strength += 25;
+                
+                strengthMeter.style.width = strength + "%";
+                
+                if (strength < 25) {
+                    strengthMeter.style.backgroundColor = "#ff4747";
+                    strengthText.textContent = "Weak";
+                } else if (strength < 50) {
+                    strengthMeter.style.backgroundColor = "#ffa726";
+                    strengthText.textContent = "Fair";
+                } else if (strength < 75) {
+                    strengthMeter.style.backgroundColor = "#66bb6a";
+                    strengthText.textContent = "Good";
+                } else {
+                    strengthMeter.style.backgroundColor = "#43a047";
+                    strengthText.textContent = "Strong";
+                }
+            });
+
+            if (registerForm) {
+                registerForm.addEventListener("submit", async function (event) {
+                    event.preventDefault(); // Prevent page reload
+                    
+                    let isValid = true;
+
+                    // Basic form validation
+                    const name = document.getElementById("name");
+                    const email = document.getElementById("email");
+                    const password = document.getElementById("password");
+                    const bloodType = document.getElementById("bloodType");
+                    const age = document.getElementById("age");
+                    const city = document.getElementById("city");
+                    
+                    // Validate name
+                    if (!name.value.trim()) {
+                        name.classList.add("error");
+                        isValid = false;
+                    } else {
+                        name.classList.remove("error");
+                    }
+                    
+                    // Validate email
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(email.value.trim())) {
+                        email.classList.add("error");
+                        isValid = false;
+                    } else {
+                        email.classList.remove("error");
+                    }
+                    
+                    // Validate age
+                    if (!age.value || parseInt(age.value) < 18) {
+                        age.classList.add("error");
+                        isValid = false;
+                    } else {
+                        age.classList.remove("error");
+                    }
+                    
+                    // Validate blood type
+                    if (!bloodType.value) {
+                        bloodType.classList.add("error");
+                        isValid = false;
+                    } else {
+                        bloodType.classList.remove("error");
+                    }
+                    
+                    // Validate city
+                    if (!city.value.trim()) {
+                        city.classList.add("error");
+                        isValid = false;
+                    } else {
+                        city.classList.remove("error");
+                    }
+                    
+                    if (!isValid) {
+                        return;
+                    }
+
+                    // Create request body
+                    const userData = { 
+                        name: name.value.trim(), 
+                        email: email.value.trim(), 
+                        password: password.value.trim(), 
+                        bloodType: bloodType.value, 
+                        age: age.value.trim(), 
+                        address: { city: city.value.trim() }
+                    };
+
+                    try {
+                        // Show loading state on button
+                        const submitButton = registerForm.querySelector("button");
+                        const originalText = submitButton.innerHTML;
+                        submitButton.innerHTML = `<span>Processing...</span>`;
+                        submitButton.disabled = true;
+                        
+                        const response = await fetch("http://localhost:5000/api/auth/register", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(userData)
+                        });
+
+                        const data = await response.json();
+
+                        if (response.ok) {
+                            // Hide form and show success message
+                            registerForm.style.display = "none";
+                            document.querySelector(".success-message").style.display = "block";
+                            
+                            // Redirect after delay
+                            setTimeout(() => {
+                                window.location.href = "login.html";
+                            }, 2000);
+                        } else {
+                            alert("Error: " + (data.msg || "Registration failed"));
+                            submitButton.innerHTML = originalText;
+                            submitButton.disabled = false;
+                        }
+                    } catch (error) {
+                        console.error("Registration Error:", error);
+                        alert("An error occurred. Please try again.");
+                        submitButton.innerHTML = originalText;
+                        submitButton.disabled = false;
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

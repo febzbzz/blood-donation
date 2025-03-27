@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Donation Center Locator</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Your existing styles remain the same */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: #f5f5f5;
+        }
+
+        .header {
+            background-color: #e31837;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin-bottom: 0.5rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+        }
+
+        .search-panel {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+        }
+
+        button {
+            width: 100%;
+            padding: 1rem;
+            background-color: #e31837;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #c41230;
+        }
+
+        #map {
+            height: 600px;
+            background: #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .location-list {
+            margin-top: 2rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .location-item {
+            padding: 1rem;
+            border-bottom: 1px solid #ddd;
+            cursor: pointer;
+        }
+
+        .location-item:hover {
+            background-color: #f8f8f8;
+        }
+
+        .blood-type-info {
+            background-color: #fff3f3;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+        }
+
+        .blood-type-info h3 {
+            color: #e31837;
+            margin-bottom: 0.5rem;
+        }
+
+        .emergency-contact {
+            background-color: #ffe8e8;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-top: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            #map {
+                height: 400px;
+            }
+        }
+
+        .icon {
+            margin-right: 0.5rem;
+            color: #e31837;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1><i class="fas fa-heart"></i> Blood Donation Center Locator</h1>
+        <p>Find your nearest blood donation center and save lives</p>
+    </header>
+
+    <div class="container">
+        <div class="search-panel">
+            <div class="blood-type-info">
+                <h3><i class="fas fa-tint icon"></i>Blood Type Information</h3>
+                <p>All blood types are needed. If you don't know your blood type, you can still donate!</p>
+            </div>
+
+            <form id="searchForm">
+                <div class="form-group">
+                    <label for="location">Your Location</label>
+                    <input type="text" id="location" placeholder="Enter your address or zip code">
+                </div>
+
+                <div class="form-group">
+                    <label for="radius">Search Radius</label>
+                    <select id="radius">
+                        <option value="5">5 km</option>
+                        <option value="10" selected>10 km</option>
+                        <option value="20">20 km</option>
+                        <option value="50">50 km</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="type">Facility Type</label>
+                    <select id="type">
+                        <option value="all">All</option>
+                        <option value="bloodbank">Blood Banks</option>
+                        <option value="hospital">Hospitals</option>
+                    </select>
+                </div>
+
+                <button type="submit">
+                    <i class="fas fa-search"></i> Find Donation Centers
+                </button>
+            </form>
+
+            <div class="emergency-contact">
+                <h3><i class="fas fa-phone icon"></i>Emergency Contact</h3>
+                <p>For urgent donations, call: <br>
+                <strong>+91 8289963634</strong></p>
+            </div>
+
+            <div class="location-list" id="locationList">
+                <!-- Location results will be populated here -->
+            </div>
+        </div>
+
+        <div id="map">
+            <!-- Google Maps will be loaded here -->
+        </div>
+    </div>
+
+    <!-- Single script tag for Google Maps with both Maps and Places libraries -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCWED24ut0NZVXBKwkiynWByxmjj__fVcw&libraries=places"></script>
+    
+    <script>
+        // Initialize the map and autocomplete when the page loads
+        function initMap() {
+            // Create the map
+            const map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 20.5937, lng: 78.9629 }, // Center of India
+                zoom: 5
+            });
+
+            // Initialize the autocomplete for the location input
+            const autocomplete = new google.maps.places.Autocomplete(
+                document.getElementById('location'),
+                { types: ['geocode'] }
+            );
+
+            // Create a marker for the selected location
+            let marker = null;
+
+            // Listen for the place selection
+            autocomplete.addListener('place_changed', () => {
+                const place = autocomplete.getPlace();
+
+                if (!place.geometry) {
+                    alert("No location details available for this place.");
+                    return;
+                }
+
+                // Center the map on the selected location
+                map.setCenter(place.geometry.location);
+                map.setZoom(13);
+
+                // Remove existing marker if any
+                if (marker) {
+                    marker.setMap(null);
+                }
+
+                // Add a new marker
+                marker = new google.maps.Marker({
+                    map: map,
+                    position: place.geometry.location,
+                    title: place.name
+                });
+            });
+
+            // Handle form submission
+            document.getElementById('searchForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const location = document.getElementById('location').value;
+                const radius = document.getElementById('radius').value;
+                const type = document.getElementById('type').value;
+
+                // Here you would add the logic to search for nearby blood banks
+                // using the Places API service.nearbySearch() method
+                searchNearbyPlaces(map, marker.getPosition(), radius, type);
+            });
+        }
+
+        // Function to search for nearby places
+        function searchNearbyPlaces(map, location, radius, type) {
+            const service = new google.maps.places.PlacesService(map);
+            
+            const request = {
+                location: location,
+                radius: radius * 1000, // Convert km to meters
+                type: ['hospital'] // You can modify this based on the selected type
+            };
+
+            service.nearbySearch(request, (results, status) => {
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
+                    // Clear existing locations
+                    document.getElementById('locationList').innerHTML = '';
+                    
+                    results.forEach(place => {
+                        // Create marker for each place
+                        new google.maps.Marker({
+                            map: map,
+                            position: place.geometry.location,
+                            title: place.name,
+                            icon: {
+                                url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png'
+                            }
+                        });
+
+                        // Add to location list
+                        const locationItem = document.createElement('div');
+                        locationItem.className = 'location-item';
+                        locationItem.innerHTML = `
+                            <h4>${place.name}</h4>
+                            <p>${place.vicinity}</p>
+                        `;
+                        document.getElementById('locationList').appendChild(locationItem);
+                    });
+                }
+            });
+        }
+
+        // Initialize the map when the page loads
+        window.onload = initMap;
+    </script>
+</body>
+</html>

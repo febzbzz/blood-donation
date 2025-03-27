@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BloodLife | Donate Blood, Save Lives</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <div class="logo-animation">
+                <svg viewBox="0 0 60 60" width="40" height="40">
+                    <!-- Animated Pulsing Blood Drop -->
+                    <path class="pulse" d="M30 10 L40 30 C45 40, 45 50, 30 55 C15 50, 15 40, 20 30 Z" fill="#FF1E1E"/>
+                </svg>
+            </div>
+            <span>BloodLife</span>
+        </div>
+        <div class="nav-links">
+            <a href="register.html">Donate</a>
+            <a href="table.html">Donors</a>
+            <a href="registration.html">Receipients</a>
+            <a href="matches.html">Matches</a>
+            <a href="learn.html">Learn</a>
+            <a href="impact.html">Impact</a>
+            <a class="donate-now"href="login.html" style="color: white;" >Login</a>
+               
+
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Your Blood<br>
+                <span class="red-text">Their Tomorrow</span>
+            </h1>
+            <p>Every drop you donate flows with the power to save lives</p>
+            <div class="hero-buttons">
+                <a href="register.html">
+                <button class="primary-btn">Start Saving Lives</button></a>
+
+
+                <a href="centre.html">
+                    <button class="secondary-btn">Find Centres</button>
+                </a>
+            </div>
+        </div>
+        <div class="blood-type-circles">
+            <div class="blood-type">A+</div>
+            <div class="blood-type">B+</div>
+            <div class="blood-type">O+</div>
+            <div class="blood-type">AB+</div>
+        </div>
+    </header>
+
+    <section class="stats-container">
+        <div class="stat-box">
+            <div class="stat-number">1</div>
+            <div class="stat-text">Donation</div>
+            <div class="stat-subtext">Can save up to 3 lives</div>
+        </div>
+        <div class="stat-box highlight">
+            <div class="stat-number">14.5</div>
+            <div class="stat-text">Million</div>
+            <div class="stat-subtext">Indians need blood yearly</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-number">43K</div>
+            <div class="stat-text">Pints</div>
+            <div class="stat-subtext">Needed daily in India</div>
+        </div>
+    </section>
+
+    <section class="process-section">
+        <h2>Donation Process</h2>
+        <div class="process-steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Registration</h3>
+                    <p>Sign up and complete a brief health questionnaire</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Screening</h3>
+                    <p>Quick health check and blood type verification</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Donation</h3>
+                    <p>Simple 10-15 minute donation process</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2>Ready to Make a Difference?</h2>
+            <p>Join thousands of donors who save lives every day</p>
+            <button class="cta-button">Schedule Appointment</button>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <svg viewBox="0 0 60 60" width="30" height="30">
+                    <path d="M30 10 L40 30 C45 40, 45 50, 30 55 C15 50, 15 40, 20 30 Z" fill="#FF1E1E"/>
+                </svg>
+                <span>BloodLife</span>
+            </div>
+            <div class="footer-links">
+                <div class="link-column">
+                    <h4>About</h4>
+                    <a href="#mission">Our Mission</a>
+                    <a href="#impact">Impact</a>
+                    <a href="#team">Team</a>
+                </div>
+                <div class="link-column">
+                    <h4>Donate</h4>
+                    <a href="#locations">Locations</a>
+                    <a href="#eligibility">Eligibility</a>
+                    <a href="#faq">FAQ</a>
+                </div>
+                <div class="link-column">
+                    <h4>Contact</h4>
+                    <a href="#support">Support</a>
+                    <a href="#emergency">Emergency</a>
+                    <a href="#feedback">Feedback</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 BloodLife. All rights reserved.</p>
+        </div>
+    </footer>
+    <table id="usersTable" border="1">
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Blood Group</th>
+            <th>City</th>
+        </tr>
+    </table>
+    <!-- Include axios for API calls -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    
+    <!-- Include your script files -->
+    <script src="api.js"></script>
+    <script src="DonorRegistration.js"></script>
+    
+    <script src="/script.js"></script>
+
+</body>
+</html>

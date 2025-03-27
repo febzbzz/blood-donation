@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Donation Users</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        :root {
+            --primary: #e53935;
+            --primary-light: #ff6f60;
+            --primary-dark: #ab000d;
+            --secondary: #f5f5f5;
+            --accent: #b71c1c;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        .header-container {
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            color: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .table-container {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+        }
+        
+        th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+        
+        th, td {
+            padding: 1rem !important;
+            vertical-align: middle !important;
+        }
+        
+        tbody tr {
+            transition: background-color 0.3s;
+        }
+        
+        tbody tr:hover {
+            background-color: rgba(229, 57, 53, 0.05);
+        }
+        
+        .blood-type {
+            font-weight: 700;
+            background-color: #ffebee;
+            color: var(--primary);
+            padding: 0.3rem 0.6rem;
+            border-radius: 1rem;
+            display: inline-block;
+        }
+        
+        .droplet {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            transform: rotate(45deg);
+            animation: float 15s infinite ease-in-out;
+            z-index: 1;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(45deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.5; 
+            }
+            100% {
+                transform: translateY(-800px) rotate(45deg);
+                opacity: 0;
+            }
+        }
+        
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(229, 57, 53, 0.1);
+            border-left-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .no-data {
+            text-align: center;
+            padding: 2rem;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body class="container py-5">
+    <div class="header-container">
+        <h2 class="page-title">Registered Blood Donors</h2>
+        <p class="text-white mb-0">Dashboard of all registered donors in our system</p>
+        
+        <!-- Animated Droplets in Header -->
+        <div class="droplet" style="width: 40px; height: 60px; top: -30px; left: 10%; animation-delay: 0s; animation-duration: 12s;"></div>
+        <div class="droplet" style="width: 30px; height: 45px; top: -20px; left: 25%; animation-delay: 2s; animation-duration: 18s;"></div>
+        <div class="droplet" style="width: 50px; height: 75px; top: -40px; left: 45%; animation-delay: 4s; animation-duration: 15s;"></div>
+        <div class="droplet" style="width: 35px; height: 53px; top: -25px; left: 65%; animation-delay: 6s; animation-duration: 17s;"></div>
+        <div class="droplet" style="width: 45px; height: 68px; top: -35px; left: 85%; animation-delay: 8s; animation-duration: 14s;"></div>
+    </div>
+    
+    <div class="table-container">
+        <!-- Animated Droplets in Background -->
+        <div class="droplet" style="width: 60px; height: 90px; bottom: -60px; right: 5%; animation-delay: 1s; animation-duration: 20s;"></div>
+        <div class="droplet" style="width: 40px; height: 60px; bottom: -40px; right: 25%; animation-delay: 5s; animation-duration: 16s;"></div>
+        <div class="droplet" style="width: 50px; height: 75px; bottom: -50px; right: 50%; animation-delay: 7s; animation-duration: 19s;"></div>
+        
+        <table class="table table-borderless">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Blood Type</th>
+                  <th>Phone</th>
+                   <th>Registered At<th>
+                </tr>
+            </thead>
+            <tbody id="usersTable">
+                <!-- Table data will be inserted here -->
+            </tbody>
+        </table>
+        
+        <div id="loadingSpinner" class="loading-spinner">
+            <div class="spinner"></div>
+        </div>
+        
+        <div id="noData" class="no-data" style="display: none;">
+            <p>No donors registered yet.</p>
+        </div>
+    </div>
+
+    <script>
+        async function fetchUsers() {
+            try {
+                document.getElementById('loadingSpinner').style.display = 'flex';
+                
+                let response = await fetch('http://localhost:5000/users');
+                let users = await response.json();
+                let tableBody = document.getElementById('usersTable');
+                
+                document.getElementById('loadingSpinner').style.display = 'none';
+                
+                if (users.length === 0) {
+                    document.getElementById('noData').style.display = 'block';
+                    return;
+                }
+                
+                tableBody.innerHTML = '';
+                
+                users.forEach(user => {
+                    let row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${user.name}</td>
+                        <td>${user.email}</td>
+                        <td>${user.role}</td>
+                        <td><span class="blood-type">${user.bloodType}</span></td>
+                        <td>${user.phone || 'N/A'}</td>
+                        <td>${new Date(user.createdAt).toLocaleString()}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error fetching users:', error);
+                document.getElementById('loadingSpinner').style.display = 'none';
+                document.getElementById('noData').style.display = 'block';
+                document.getElementById('noData').innerHTML = '<p>Error loading data. Please try again later.</p>';
+            }
+        }
+        
+        // Create additional animated droplets dynamically
+        function createDroplets() {
+            const container = document.querySelector('body');
+            const dropletCount = 5;
+            
+            for (let i = 0; i < dropletCount; i++) {
+                const droplet = document.createElement('div');
+                droplet.classList.add('droplet');
+                
+                const size = Math.floor(Math.random() * 30) + 20; // 20-50px
+                const left = Math.floor(Math.random() * 100); // 0-100%
+                const delay = Math.floor(Math.random() * 10); // 0-10s
+                const duration = Math.floor(Math.random() * 10) + 15; // 15-25s
+                
+                droplet.style.width = `${size}px`;
+                droplet.style.height = `${size * 1.5}px`;
+                droplet.style.left = `${left}%`;
+                droplet.style.top = `100%`;
+                droplet.style.animationDelay = `${delay}s`;
+                droplet.style.animationDuration = `${duration}s`;
+                
+                container.appendChild(droplet);
+            }
+        }
+        
+        // Initialize
+        window.addEventListener('load', () => {
+            fetchUsers();
+            createDroplets();
+        });
+    </script>
+</body>
+</html>

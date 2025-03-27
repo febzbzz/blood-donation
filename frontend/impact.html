@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BloodLife - Impact</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            color: #333;
+        }
+
+        /* Impact Section Styles */
+        .impact-section {
+            padding: 60px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .impact-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: #333;
+        }
+
+        .impact-stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-bottom: 60px;
+        }
+
+        .stat-card {
+            width: 300px;
+            padding: 30px;
+            margin: 15px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card.primary {
+            background-color: #ff2d2d;
+            color: white;
+        }
+
+        .stat-card.secondary {
+            background-color: #f8f8f8;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .stat-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .stat-description {
+            font-size: 0.9rem;
+        }
+
+        .impact-stories {
+            margin-top: 40px;
+        }
+
+        .impact-stories h3 {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+        }
+
+        .story-carousel {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .story-slide {
+            display: none;
+            padding: 30px;
+            background-color: #f8f8f8;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .story-slide.active {
+            display: block;
+        }
+
+        .story-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .story-quote {
+            font-style: italic;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        .story-author {
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .story-role {
+            color: #666;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .carousel-nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .carousel-nav-btn {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #ff2d2d;
+            margin: 0 10px;
+        }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            background-color: #ccc;
+            border-radius: 50%;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .carousel-dot.active {
+            background-color: #ff2d2d;
+        }
+
+        /* Impact Map */
+        .impact-map {
+            margin-top: 60px;
+        }
+
+        .impact-map h3 {
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+        }
+
+        .map-container {
+            height: 400px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .cta-container {
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: #ff2d2d;
+            color: white;
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background-color: #e02020;
+        }
+
+        @media (max-width: 768px) {
+            .impact-stats {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .stat-card {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="impact-section">
+        <h2>Our Impact</h2>
+        
+        <div class="impact-stats">
+            <div class="stat-card secondary">
+                <div class="stat-number">750K+</div>
+                <div class="stat-title">Lives Saved</div>
+                <div class="stat-description">Through blood donations and awareness campaigns</div>
+            </div>
+            
+            <div class="stat-card primary">
+                <div class="stat-number">2.5M</div>
+                <div class="stat-title">Donations Collected</div>
+                <div class="stat-description">From our dedicated donors across India</div>
+            </div>
+            
+            <div class="stat-card secondary">
+                <div class="stat-number">500+</div>
+                <div class="stat-title">Partner Hospitals</div>
+                <div class="stat-description">Working together to save lives nationwide</div>
+            </div>
+        </div>
+        
+        <div class="impact-stories">
+            <h3>Stories of Hope</h3>
+            
+            <div class="story-carousel">
+                <div class="story-slide active">
+                    <div class="story-content">
+                        <p class="story-quote">"I received blood after a serious accident that nearly took my life. The donors who gave their blood never met me, but their generosity saved me. Now I donate regularly to pay it forward."</p>
+                        <p class="story-author">Priya Sharma</p>
+                        <p class="story-role">Recipient & Blood Donor</p>
+                    </div>
+                </div>
+                
+                <div class="story-slide">
+                    <div class="story-content">
+                        <p class="story-quote">"My daughter needed multiple transfusions during her cancer treatment. Each bag of blood gave her strength to keep fighting. The donors who helped her are heroes without capes."</p>
+                        <p class="story-author">Rajesh Patel</p>
+                        <p class="story-role">Father of Recipient</p>
+                    </div>
+                </div>
+                
+                <div class="story-slide">
+                    <div class="story-content">
+                        <p class="story-quote">"I've been donating blood for 15 years now. It costs nothing but a little time, and knowing that my donation might save someone's child, parent, or friend is the greatest feeling."</p>
+                        <p class="story-author">Vikram Singh</p>
+                        <p class="story-role">Regular Donor</p>
+                    </div>
+                </div>
+                
+                <div class="carousel-nav">
+                    <button class="carousel-nav-btn prev-btn">&#8249;</button>
+                    <button class="carousel-nav-btn next-btn">&#8250;</button>
+                </div>
+                
+                <div class="carousel-dots">
+                    <div class="carousel-dot active" data-index="0"></div>
+                    <div class="carousel-dot" data-index="1"></div>
+                    <div class="carousel-dot" data-index="2"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="impact-map">
+            <h3>Our Reach Across India</h3>
+            <div class="map-container" id="impactMap">
+                <!-- Map will be inserted here by JavaScript -->
+            </div>
+        </div>
+        
+        <div class="cta-container">
+            <a href="#" class="cta-button">Start Saving Lives Today</a>
+        </div>
+    </section>
+
+    <script>
+        // Stories Carousel
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.story-slide');
+            const dots = document.querySelectorAll('.carousel-dot');
+            const prevBtn = document.querySelector('.prev-btn');
+            const nextBtn = document.querySelector('.next-btn');
+            let currentIndex = 0;
+            
+            function showSlide(index) {
+                slides.forEach(slide => slide.classList.remove('active'));
+                dots.forEach(dot => dot.classList.remove('active'));
+                
+                slides[index].classList.add('active');
+                dots[index].classList.add('active');
+                currentIndex = index;
+            }
+            
+            prevBtn.addEventListener('click', function() {
+                let newIndex = currentIndex - 1;
+                if (newIndex < 0) newIndex = slides.length - 1;
+                showSlide(newIndex);
+            });
+            
+            nextBtn.addEventListener('click', function() {
+                let newIndex = currentIndex + 1;
+                if (newIndex >= slides.length) newIndex = 0;
+                showSlide(newIndex);
+            });
+            
+            dots.forEach(dot => {
+                dot.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    showSlide(index);
+                });
+            });
+            
+            // Auto-advance slides every 5 seconds
+            setInterval(function() {
+                let newIndex = currentIndex + 1;
+                if (newIndex >= slides.length) newIndex = 0;
+                showSlide(newIndex);
+            }, 5000);
+            
+            // Initialize map (placeholder - you'll need to use a real map library)
+            initImpactMap();
+        });
+        
+        // Simple map placeholder function
+        function initImpactMap() {
+            const mapContainer = document.getElementById('impactMap');
+            
+            // This is just a placeholder. In a real implementation, 
+            // you would use a library like Google Maps, Mapbox, or Leaflet
+            mapContainer.innerHTML = `
+                <div style="width: 100%; height: 100%; background-color: #e9f5ff; display: flex; align-items: center; justify-content: center;">
+                    <svg width="600" height="350" viewBox="0 0 600 350">
+                        <!-- Simplified outline of India -->
+                        <path d="M300,50 C400,70 500,150 480,250 C460,350 350,330 300,300 C250,330 140,350 120,250 C100,150 200,70 300,50" fill="#d3e8ff" stroke="#4a89dc" stroke-width="2"></path>
+                        
+                        <!-- Blood donation centers as dots -->
+                        <circle cx="320" cy="110" r="8" fill="#ff2d2d"></circle>
+                        <circle cx="380" cy="150" r="8" fill="#ff2d2d"></circle>
+                        <circle cx="270" cy="180" r="8" fill="#ff2d2d"></circle>
+                        <circle cx="220" cy="140" r="8" fill="#ff2d2d"></circle>
+                        <circle cx="340" cy="220" r="8" fill="#ff2d2d"></circle>
+                        <circle cx="400" cy="190" r="8" fill="#ff2d2d"></circle>
+                        <circle cx="200" cy="200" r="8" fill="#ff2d2d"></circle>
+                        <circle cx="300" cy="250" r="8" fill="#ff2d2d"></circle>
+                        
+                        <!-- City labels -->
+                        <text x="320" y="100" font-size="10" fill="#333">Delhi</text>
+                        <text x="380" y="140" font-size="10" fill="#333">Mumbai</text>
+                        <text x="270" y="170" font-size="10" fill="#333">Chennai</text>
+                        <text x="220" y="130" font-size="10" fill="#333">Kolkata</text>
+                        <text x="340" y="210" font-size="10" fill="#333">Bangalore</text>
+                        <text x="400" y="180" font-size="10" fill="#333">Hyderabad</text>
+                        <text x="200" y="190" font-size="10" fill="#333">Jaipur</text>
+                        <text x="300" y="240" font-size="10" fill="#333">Kochi</text>
+                    </svg>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

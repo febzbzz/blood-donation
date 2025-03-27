@@ -1,0 +1,793 @@
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Recipients</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            text-align: center;
+        }
+        h2 {
+            color: #d9534f;
+        }
+        form {
+            background: white;
+            padding: 20px;
+            width: 50%;
+            margin: auto;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px gray;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #d9534f;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #c9302c;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0px 0px 10px gray;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        th {
+            background: #d9534f;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h2>Blood Recipients Registration</h2>
+    <form id="recipientForm">
+        <input type="text" id="name" placeholder="Full Name" required>
+        <select id="bloodGroup" required>
+            <option value="">Select Blood Group</option>
+            <option value="A+">A+</option>
+            <option value="A-">A-</option>
+            <option value="B+">B+</option>
+            <option value="B-">B-</option>
+            <option value="O+">O+</option>
+            <option value="O-">O-</option>
+            <option value="AB+">AB+</option>
+            <option value="AB-">AB-</option>
+        </select>
+        <input type="text" id="contact" placeholder="Contact Number" required>
+        <input type="text" id="address" placeholder="Address" required>
+        <input type="number" id="units" placeholder="Required Units" required>
+        <input type="email" id="email" placeholder="Email" required>
+
+        <button type="submit">Register</button>
+    </form>
+
+    <h2>Registered Recipients</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Blood Group</th>
+               <!----<th>Contact</th>-->
+               <!----
+                <th>Address</th>
+                <th>Units</th>
+            </tr>
+        </thead>
+        <tbody id="recipientsList"></tbody>
+    </table>
+
+    <script>
+        document.getElementById('recipientForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const recipient = {
+                name: document.getElementById('name').value,
+                bloodGroup: document.getElementById('bloodGroup').value,
+                contact: document.getElementById('contact').value,
+                email: document.getElementById('email').value,  // Added email field
+
+                address: document.getElementById('address').value,
+                units: document.getElementById('units').value
+            };
+
+            
+   
+    console.log('Sending recipient:', recipient);  // Debugging log
+
+    if (!recipient.email) {
+        alert('Email is required!');
+        return;
+    }
+
+
+            const response = await fetch('/api/recipients', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(recipient)
+            });
+
+            if (response.ok) {
+                alert('Recipient registered successfully!');
+                fetchRecipients();
+            } else {
+                alert('Failed to register recipient.');
+            }
+        });
+
+        async function fetchRecipients() {
+            const response = await fetch('/api/recipients');
+            const recipients = await response.json();
+            const recipientsList = document.getElementById('recipientsList');
+            recipientsList.innerHTML = '';
+            recipients.forEach(recipient => {
+                const row = `<tr>
+                    <td>${recipient.name}</td>
+                    <td>${recipient.bloodGroup}</td>
+                    <td>${recipient.contact}</td>
+                    <td>${recipient.address}</td>
+                    <td>${recipient.units}</td>
+                </tr>`;
+                recipientsList.innerHTML += row;
+            });
+        }
+
+        fetchRecipients();
+    </script>
+</body>
+</html>
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Recipients</title>
+
+
+    <style>
+        /* Global Styles */
+        :root {
+            --primary-color: #d9534f;
+            --primary-dark: #c9302c;
+            --primary-light: #f2dede;
+            --accent-color: #5bc0de;
+            --text-color: #333;
+            --light-text: #f8f9fa;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: var(--text-color);
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+            min-height: 100vh;
+            padding-bottom: 40px;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 0;
+            position: relative;
+            z-index: 2; /* Place content above droplets */
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 20px 0;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow);
+            position: relative;
+            z-index: 2; /* Place header above droplets */
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            position: relative;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        header p {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-top: 10px;
+            position: relative;
+        }
+        
+        /* Animated Blood Droplets */
+        .droplets-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none; /* Allow clicking through droplets */
+            z-index: 1; /* Place behind content */
+        }
+        
+        .droplet {
+            position: absolute;
+            background-color: rgba(217, 83, 79, 0.5);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            filter: drop-shadow(0 0 10px rgba(217, 83, 79, 0.3));
+            z-index: 1;
+            animation: falling linear infinite;
+        }
+        
+        @keyframes falling {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(calc(100vh + 100px)) rotate(20deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Form Styles */
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 2; /* Place above droplets */
+            border-top: 5px solid var(--primary-color);
+        }
+        
+        h2 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+            position: relative;
+        }
+        
+        h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background-color: var(--primary-color);
+            margin: 10px auto 0;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(217, 83, 79, 0.2);
+            outline: none;
+        }
+        
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+        
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Table Styles */
+        .table-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            overflow-x: auto;
+            border-top: 5px solid var(--primary-color);
+            position: relative;
+            z-index: 2; /* Place above droplets */
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        th {
+            background: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            position: relative;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        
+        /* Blood icon */
+        .blood-icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            vertical-align: middle;
+            display: inline-block;
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .form-container, .table-container {
+                padding: 20px;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            th, td {
+                padding: 10px;
+            }
+        }
+        
+        /* Blood icon SVG */
+        .blood-svg {
+            fill: white;
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        
+        /* Success message styles */
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 12px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            display: none;
+            text-align: center;
+            border-left: 5px solid #28a745;
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            color: #888;
+            font-size: 0.9rem;
+            margin-top: 30px;
+            position: relative;
+            z-index: 2; /* Place above droplets */
+        }
+        
+        /* Loading spinner */
+        .spinner {
+            display: none;
+            width: 40px;
+            height: 40px;
+            margin: 10px auto;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Droplets container - covers entire page -->
+    <div class="droplets-container" id="droplets-container"></div>
+    
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <svg class="blood-svg" viewBox="0 0 512 512">
+                    <path d="M256 0C236.9 0 220.1 9.1 207 27c-25 34.4-55.4 77.4-90.5 126.9C81.7 203.1 48 263.2 48 320c0 106 86 192 192 192s192-86 192-192c0-56.8-33.7-116.9-68.5-166.1-35.1-49.5-65.5-92.5-90.5-126.9C291.9 9.1 275.1 0 256 0z"/>
+                </svg>
+                <h1>Blood Recipients Registry</h1>
+            </div>
+            <p>Join the life-saving community</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="form-container">
+            <h2>Register as a Recipient</h2>
+            <div id="successMessage" class="success-message">
+                Recipient registered successfully!
+            </div>
+            <form id="recipientForm">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" placeholder="Enter your full name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="bloodGroup">Blood Group</label>
+                    <select id="bloodGroup" required>
+                        <option value="">Select Blood Group</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="contact">Contact Number</label>
+                    <input type="text" id="contact" placeholder="Enter your contact number" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="Enter your email address" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input type="text" id="address" placeholder="Enter your address" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="units">Required Units</label>
+                    <input type="number" id="units" placeholder="Number of units required" required>
+                </div>
+                
+                <div id="loadingSpinner" class="spinner"></div>
+                <button type="submit">Register as Recipient</button>
+            </form>
+        </div>
+        
+        <div class="table-container">
+            <h2>Registered Recipients</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Blood Group</th>
+                        <th>Address</th>
+                        <!--<th>Phone</th>-->
+                        <th>Units</th>
+                    </tr>
+                </thead>
+                <tbody id="recipientsList"></tbody>
+            </table>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Blood Donation Registry. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Create animated blood droplets across the entire page
+        function createDroplets() {
+            const dropletCount = 15; // Increased number of droplets
+            const container = document.getElementById('droplets-container');
+            
+            for (let i = 0; i < dropletCount; i++) {
+                const droplet = document.createElement('div');
+                droplet.className = 'droplet';
+                
+                // Random size between 20px and 70px (larger droplets)
+                const size = Math.floor(Math.random() * 50) + 20;
+                droplet.style.width = size + 'px';
+                droplet.style.height = (size * 1.2) + 'px';
+                
+                // Random horizontal position
+                const left = Math.floor(Math.random() * 100);
+                droplet.style.left = left + '%';
+                
+                // Random fall duration between 10s and 25s (slower droplets)
+                const duration = Math.floor(Math.random() * 15) + 10;
+                droplet.style.animationDuration = duration + 's';
+                
+                // Random delay to spread out the drops
+                const delay = Math.floor(Math.random() * 15);
+                droplet.style.animationDelay = delay + 's';
+                
+                // Random transparency
+                const opacity = (Math.random() * 0.3) + 0.2;
+                droplet.style.backgroundColor = `rgba(217, 83, 79, ${opacity})`;
+                
+                container.appendChild(droplet);
+            }
+        }
+        
+        // Continuously create droplets
+        function startDropletSystem() {
+            createDroplets();
+            
+            // Create new droplets periodically
+            setInterval(() => {
+                const container = document.getElementById('droplets-container');
+                
+                // Remove some old droplets to prevent too many elements
+                if (container.children.length > 30) {
+                    for (let i = 0; i < 5; i++) {
+                        if (container.firstChild) {
+                            container.removeChild(container.firstChild);
+                        }
+                    }
+                }
+                
+                // Add new droplets
+                for (let i = 0; i < 5; i++) {
+                    const droplet = document.createElement('div');
+                    droplet.className = 'droplet';
+                    
+                    const size = Math.floor(Math.random() * 50) + 20;
+                    droplet.style.width = size + 'px';
+                    droplet.style.height = (size * 1.2) + 'px';
+                    
+                    const left = Math.floor(Math.random() * 100);
+                    droplet.style.left = left + '%';
+                    
+                    const duration = Math.floor(Math.random() * 15) + 10;
+                    droplet.style.animationDuration = duration + 's';
+                    
+                    const opacity = (Math.random() * 0.3) + 0.2;
+                    droplet.style.backgroundColor = `rgba(217, 83, 79, ${opacity})`;
+                    
+                    container.appendChild(droplet);
+                }
+            }, 5000); // Add new droplets every 5 seconds
+        }
+        
+        // Form submission handler
+        document.getElementById('recipientForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            // Show loading spinner
+            document.getElementById('loadingSpinner').style.display = 'block';
+            
+            const recipient = {
+                name: document.getElementById('name').value,
+                bloodGroup: document.getElementById('bloodGroup').value,
+                contact: document.getElementById('contact').value,
+                email: document.getElementById('email').value,
+                address: document.getElementById('address').value,
+                units: document.getElementById('units').value
+            };
+            
+            console.log('Sending recipient:', recipient);  // Debugging log
+            
+            if (!recipient.email) {
+                alert('Email is required!');
+                document.getElementById('loadingSpinner').style.display = 'none';
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/recipients', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(recipient)
+                });
+                
+                if (response.ok) {
+                    // Show success message
+                    const successMessage = document.getElementById('successMessage');
+                    successMessage.style.display = 'block';
+                    
+                    // Clear form
+                    document.getElementById('recipientForm').reset();
+                    
+                    // Hide success message after 5 seconds
+                    setTimeout(() => {
+                        successMessage.style.display = 'none';
+                    }, 5000);
+                    
+                    fetchRecipients();
+                } else {
+                    alert('Failed to register recipient.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while registering.');
+            } finally {
+                // Hide loading spinner
+                document.getElementById('loadingSpinner').style.display = 'none';
+            }
+        });
+        // Fetch and display registered recipients
+async function fetchRecipients() {
+    try {
+        const response = await fetch('/api/recipients');
+        const recipients = await response.json();
+        const recipientsList = document.getElementById('recipientsList');
+        recipientsList.innerHTML = ''; // Clear previous data
+
+        recipients.forEach(recipient => {
+            const row = `
+                <tr>
+                    <td>${recipient.name}</td>
+                    <td>${recipient.bloodGroup}</td>
+                    <td>${recipient.address}</td>
+                        <td>${recipient.units}</td>
+                </tr>
+            `;
+            recipientsList.innerHTML += row;
+        });
+    } catch (error) {
+        console.error('Error fetching recipients:', error);
+
+        // Sample data for demonstration
+        const recipientsList = document.getElementById('recipientsList');
+        const sampleData = [
+            { name: 'John Doe', bloodGroup: 'A+', address: '123 Main St', contact: '9876543210', units: 2 },
+            { name: 'Jane Smith', bloodGroup: 'O-', address: '456 Oak Ave', contact: '9876543211', units: 1 },
+            { name: 'Robert Johnson', bloodGroup: 'B+', address: '789 Pine Rd', contact: '9876543212', units: 3 }
+        ];
+
+        recipientsList.innerHTML = ''; // Clear previous data
+        sampleData.forEach(recipient => {
+            const row = `
+                <tr>
+                    <td>${recipient.name}</td>
+                    <td>${recipient.bloodGroup}</td>
+                    <td>${recipient.address}</td>
+                    <td>${recipient.contact}</td>
+                    <td>${recipient.units}</td>
+                </tr>
+            `;
+            recipientsList.innerHTML += row;
+        });
+    }
+}
+
+        /*
+        
+        // Fetch and display registered recipients
+        async function fetchRecipients() {
+            try {
+                const response = await fetch('/api/recipients');
+                const recipients = await response.json();
+                const recipientsList = document.getElementById('recipientsList');
+                recipientsList.innerHTML = '';
+                
+                recipients.forEach(recipient => {
+                    const row = <tr>
+                        <td>${recipient.name}</td>
+                        <td>${recipient.bloodGroup}</td>
+                        <td>${recipient.address}</td>
+                        <td>${recipient.contact}</td>
+                        <td>${recipient.units}</td>
+                    </tr>;
+                    recipientsList.innerHTML += row;
+                });
+            } catch (error) {
+                console.error('Error fetching recipients:', error);
+                // For demo purposes, add some sample data
+                const recipientsList = document.getElementById('recipientsList');
+                const sampleData = [
+                    { name: 'John Doe', bloodGroup: 'A+', address: '123 Main St', units: 2 },
+                    { name: 'Jane Smith', bloodGroup: 'O-', address: '456 Oak Ave', units: 1 },
+                    { name: 'Robert Johnson', bloodGroup: 'B+', address: '789 Pine Rd', units: 3 }
+                ];
+                
+                recipientsList.innerHTML = '';
+                sampleData.forEach(recipient => {
+                    const row = <tr>
+                        <td>${recipient.name}</td>
+                        <td>${recipient.bloodGroup}</td>
+                        <td>${recipient.address}</td>
+                        <td>${recipient.units}</td>
+                    </tr>;
+                    recipientsList.innerHTML += row;
+                });
+            }
+        }
+    
+            */
+        
+        // Initialize droplets and fetch data when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            startDropletSystem();
+            fetchRecipients();
+        });
+    </script>
+</body>
+</html>
